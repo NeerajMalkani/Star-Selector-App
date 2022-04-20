@@ -8,7 +8,7 @@ import SettingsScreen from "./home/settings.screen";
 export default HomeScreen = () => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: "dashboard", title: "Dashboard", icon: "home" },
+    { key: "dashboard", title: "Dashboard", icon: "view-dashboard" },
     { key: "contests", title: "Contest", icon: "handshake" },
     { key: "news", title: "News", icon: "newspaper" },
     { key: "settings", title: "Settings", icon: "account-settings" },

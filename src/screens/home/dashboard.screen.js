@@ -1,10 +1,18 @@
-import { Image, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { Image, ScrollView, RefreshControl } from "react-native";
 import { Avatar, Card, Headline, Text } from "react-native-paper";
+import { TabBar, TabView } from "react-native-tab-view";
+import { Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Container, ContainerHorizontal } from "../../components/container";
+import { Container, ContainerHorizontal, ContainerVertical } from "../../components/container";
 import { theme } from "../../theme/apptheme";
+import MatchCard from "../../components/matchcard";
+
+const windowWidth = Dimensions.get("window").width;
 
 export default DashboardScreen = () => {
+  const [index, setIndex] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
   const objUserData = {
     avatar: "https://i.pinimg.com/originals/c4/c4/7d/c4c47d20db79996fe7b8f92bf4f92d9d.jpg",
     stats: {
@@ -13,10 +21,55 @@ export default DashboardScreen = () => {
       Contests: "21",
     },
   };
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    //fetchLatestMatches();
+  }, []);
+  const renderTabBar = (props) => (
+    <TabBar
+      {...props}
+      indicatorStyle={{ backgroundColor: theme.colors.primary }}
+      style={{ backgroundColor: theme.colors.textLight }}
+      inactiveColor={theme.colors.text}
+      activeColor={theme.colors.primary}
+      scrollEnabled={true}
+      tabStyle={{ width: windowWidth / 3 }}
+      labelStyle={{ fontSize: 14, fontWeight: "bold" }}
+    />
+  );
+  const renderScene = ({ route }) => {
+    switch (route.key) {
+      case "live":
+        return (
+          <ScrollView style={{ flex: 1 }} refreshControl={<RefreshControl colors={[theme.colors.primary]} refreshing={refreshing} onRefresh={onRefresh} />}>
+            <MatchCard />
+          </ScrollView>
+        );
+      case "upcoming":
+        return (
+          <ScrollView style={{ flex: 1 }}>
+            <MatchCard />
+          </ScrollView>
+        );
+      case "results":
+        return (
+          <ScrollView style={{ flex: 1 }}>
+            <MatchCard />
+          </ScrollView>
+        );
+      default:
+        return null;
+    }
+  };
+  const [routes] = useState([
+    { key: "live", title: "Live" },
+    { key: "upcoming", title: "Upcoming" },
+    { key: "results", title: "Results" },
+  ]);
   const CreateCard = () => {
     return Object.keys(objUserData.stats).map((k) => {
       return (
-        <Container style={{ flex: 1, padding: 4 }}>
+        <Container key={k} style={{ flex: 1, padding: 4 }}>
           <Card style={{ backgroundColor: theme.colors.accent }}>
             <Card.Content>
               <Text style={{ color: theme.colors.textLightSecondary }}>{k}</Text>
@@ -28,7 +81,7 @@ export default DashboardScreen = () => {
     });
   };
   return (
-    <ScrollView>
+    <ContainerVertical style={{ flex: 1 }}>
       <Container style={{ backgroundColor: theme.colors.primary, padding: 16 }}>
         <SafeAreaView>
           <ContainerHorizontal style={{ height: 56 }}>
@@ -39,6 +92,9 @@ export default DashboardScreen = () => {
           <ContainerHorizontal style={{ height: 104 }}>{CreateCard()}</ContainerHorizontal>
         </SafeAreaView>
       </Container>
-    </ScrollView>
+      <Container style={{ flex: 1 }}>
+        <TabView renderTabBar={renderTabBar} navigationState={{ index, routes }} renderScene={renderScene} onIndexChange={setIndex} />
+      </Container>
+    </ContainerVertical>
   );
 };
