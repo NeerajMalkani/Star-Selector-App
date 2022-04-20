@@ -5,8 +5,10 @@ export const theme = {
   colors: {
     ...DefaultTheme.colors,
     primary: "#0D47A1",
-    accent: "#b11313",
+    secondary: "#b11313",
+    accent: "#4687eb",
     text: "#101010",
-    textLight: "#e3e3e6",
-  },
+    textLight: "#ffffff",
+    textLightSecondary: "#dedede",
+  }
 };

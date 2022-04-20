@@ -1,5 +1,5 @@
 import { Headline } from "react-native-paper";
-import Container from "../components/container";
+import { ContainerCenter }  from "../components/container";
 import { theme } from "../theme/apptheme";
 import { createNavigationContainerRef } from "@react-navigation/native";
 
@@ -9,8 +9,8 @@ export default SplashScreen = () => {
     navigationRef.navigate("Home");
   }, 3000);
   return (
-    <Container style={{ backgroundColor: theme.colors.primary, alignItems: "center", justifyContent: "center" }}>
+    <ContainerCenter style={{ backgroundColor: theme.colors.primary, flex: 1 }}>
       <Headline style={{ color: theme.colors.textLight }}>Star Selector</Headline>
-    </Container>
+    </ContainerCenter>
   );
 };

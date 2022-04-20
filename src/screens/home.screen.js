@@ -1,22 +1,23 @@
-import { BottomNavigation, Text } from "react-native-paper";
+import { BottomNavigation } from "react-native-paper";
 import React from "react";
+import DashboardScreen from "./home/dashboard.screen";
+import ContestsScreen from "./home/contests.screen";
+import NewsScreen from "./home/news.screen";
+import SettingsScreen from "./home/settings.screen";
+
 export default HomeScreen = () => {
   const [index, setIndex] = React.useState(0);
-  const HomeRoute = () => <Text>Home</Text>;
-  const ContestsRoute = () => <Text>Contests</Text>;
-  const NewsRoute = () => <Text>News</Text>;
-  const SettingsRoute = () => <Text>Settings</Text>;
   const [routes] = React.useState([
-    { key: "home", title: "Home", icon: "home" },
-    { key: "contests", title: "Contest", icon: "home" },
-    { key: "news", title: "News", icon: "home" },
-    { key: "settings", title: "Settings", icon: "home" },
+    { key: "dashboard", title: "Dashboard", icon: "home" },
+    { key: "contests", title: "Contest", icon: "handshake" },
+    { key: "news", title: "News", icon: "newspaper" },
+    { key: "settings", title: "Settings", icon: "account-settings" },
   ]);
   const renderScene = BottomNavigation.SceneMap({
-    home: HomeRoute,
-    contests: ContestsRoute,
-    news: NewsRoute,
-    settings: SettingsRoute,
+    dashboard: DashboardScreen,
+    contests: ContestsScreen,
+    news: NewsScreen,
+    settings: SettingsScreen,
   });
   return <BottomNavigation navigationState={{ index, routes }} onIndexChange={setIndex} renderScene={renderScene} />;
 };

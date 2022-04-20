@@ -14,7 +14,7 @@ export default function App() {
       <NavigationContainer ref={navigationRef}>
         <Stack.Navigator initialRouteName="Splash">
           <Stack.Screen name="Splash" options={{ headerShown: false }} component={SplashScreen} />
-          <Stack.Screen name="Home" options={{ headerLeft: false }} component={HomeScreen} />
+          <Stack.Screen name="Home" options={{ headerShown: false }} component={HomeScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>
