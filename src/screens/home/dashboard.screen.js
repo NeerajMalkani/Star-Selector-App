@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Image, ScrollView, RefreshControl } from "react-native";
 import { Avatar, Card, Headline, Text } from "react-native-paper";
-import { TabBar, TabView } from "react-native-tab-view";
+import { TabBar, TabView, SceneMap  } from "react-native-tab-view";
 import { Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Container, ContainerHorizontal, ContainerVertical } from "../../components/container";
@@ -37,30 +37,18 @@ export default DashboardScreen = () => {
       labelStyle={{ fontSize: 14, fontWeight: "bold" }}
     />
   );
-  const renderScene = ({ route }) => {
-    switch (route.key) {
-      case "live":
-        return (
-          <ScrollView style={{ flex: 1 }} refreshControl={<RefreshControl colors={[theme.colors.primary]} refreshing={refreshing} onRefresh={onRefresh} />}>
-            <MatchCard />
-          </ScrollView>
-        );
-      case "upcoming":
-        return (
-          <ScrollView style={{ flex: 1 }}>
-            <MatchCard />
-          </ScrollView>
-        );
-      case "results":
-        return (
-          <ScrollView style={{ flex: 1 }}>
-            <MatchCard />
-          </ScrollView>
-        );
-      default:
-        return null;
-    }
+  const matchTab = () => {
+    return (
+      <ScrollView style={{ flex: 1 }} refreshControl={<RefreshControl colors={[theme.colors.primary]} refreshing={refreshing} onRefresh={onRefresh} />}>
+        <MatchCard />
+      </ScrollView>
+    );
   };
+  const renderScene = SceneMap({
+    live: matchTab,
+    upcoming: matchTab,
+    results: matchTab,
+  });
   const [routes] = useState([
     { key: "live", title: "Live" },
     { key: "upcoming", title: "Upcoming" },
