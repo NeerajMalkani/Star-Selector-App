@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, ScrollView, RefreshControl } from "react-native";
 import { Avatar, Card, Headline, Text } from "react-native-paper";
-import { TabBar, TabView, SceneMap  } from "react-native-tab-view";
+import { TabBar, TabView, SceneMap } from "react-native-tab-view";
 import { Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Container, ContainerHorizontal, ContainerVertical } from "../../components/container";
 import { theme } from "../../theme/apptheme";
 import MatchCard from "../../components/matchcard";
+import { APIKEY } from "../../api/credentials";
+import useAxios from "../../api/provider";
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -21,9 +23,21 @@ export default DashboardScreen = () => {
       Contests: "21",
     },
   };
+  const {response, loading, error, fetchData} = useAxios({
+    method: "GET",
+    url: "/getfixtures",
+    headers: JSON.stringify({
+      headers: {
+        XApiKey: APIKEY,
+      },
+    }),
+  });
+  useEffect(() => {
+    setRefreshing(false);
+  }, [refreshing]);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    //fetchLatestMatches();
+    fetchData();
   }, []);
   const renderTabBar = (props) => (
     <TabBar
@@ -40,7 +54,7 @@ export default DashboardScreen = () => {
   const matchTab = () => {
     return (
       <ScrollView style={{ flex: 1 }} refreshControl={<RefreshControl colors={[theme.colors.primary]} refreshing={refreshing} onRefresh={onRefresh} />}>
-        <MatchCard />
+        <MatchCard fixtures={response !== null ? response.data : []} />
       </ScrollView>
     );
   };

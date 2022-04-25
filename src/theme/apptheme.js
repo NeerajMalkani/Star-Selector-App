@@ -8,6 +8,7 @@ export const theme = {
     secondary: "#b11313",
     accent: "#4687eb",
     text: "#101010",
+    textSecondary: "#717171",
     textLight: "#ffffff",
     textLightSecondary: "#dedede",
   }

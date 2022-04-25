@@ -9,7 +9,8 @@ const useAxios = ({ url, method, body = null, headers = null }) => {
     const [loading, setloading] = useState(true);
 
     const fetchData = () => {
-        axios[method](url, JSON.parse(headers), JSON.parse(body))
+        console.log(axios[method.toLowerCase()]);
+        axios[method.toLowerCase()](url, JSON.parse(headers), JSON.parse(body))
             .then((res) => {
                 setResponse(res.data);
             })
@@ -25,7 +26,7 @@ const useAxios = ({ url, method, body = null, headers = null }) => {
         fetchData();
     }, [method, url, body, headers]);
 
-    return { response, error, loading };
+    return { response, error, loading, fetchData };
 };
 
 export default useAxios;
