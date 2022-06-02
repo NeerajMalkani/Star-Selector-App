@@ -23,7 +23,7 @@ export default DashboardScreen = () => {
       Contests: "21",
     },
   };
-  const {response, loading, error, fetchData} = useAxios({
+  const { response, loading, error, fetchData } = useAxios({
     method: "GET",
     url: "/getfixtures",
     headers: JSON.stringify({
@@ -39,18 +39,7 @@ export default DashboardScreen = () => {
     setRefreshing(true);
     fetchData();
   }, []);
-  const renderTabBar = (props) => (
-    <TabBar
-      {...props}
-      indicatorStyle={{ backgroundColor: theme.colors.primary }}
-      style={{ backgroundColor: theme.colors.textLight }}
-      inactiveColor={theme.colors.text}
-      activeColor={theme.colors.primary}
-      scrollEnabled={true}
-      tabStyle={{ width: windowWidth / 3 }}
-      labelStyle={{ fontSize: 14, fontWeight: "bold" }}
-    />
-  );
+  const renderTabBar = (props) => <TabBar {...props} indicatorStyle={{ backgroundColor: theme.colors.primary }} style={{ backgroundColor: theme.colors.textLight }} inactiveColor={theme.colors.text} activeColor={theme.colors.primary} scrollEnabled={true} tabStyle={{ width: windowWidth / 3 }} labelStyle={{ fontSize: 14, fontWeight: "bold" }} />;
   const matchTab = () => {
     return (
       <ScrollView style={{ flex: 1 }} refreshControl={<RefreshControl colors={[theme.colors.primary]} refreshing={refreshing} onRefresh={onRefresh} />}>
@@ -58,11 +47,18 @@ export default DashboardScreen = () => {
       </ScrollView>
     );
   };
-  const renderScene = SceneMap({
-    live: matchTab,
-    upcoming: matchTab,
-    results: matchTab,
-  });
+  const renderScene = ({ route, jumpTo }) => {
+    switch (route.key) {
+      case "live":
+      case "upcoming":
+      case "results":
+        return (
+          <ScrollView style={{ flex: 1 }} refreshControl={<RefreshControl colors={[theme.colors.primary]} refreshing={refreshing} onRefresh={onRefresh} />}>
+            <MatchCard fixtures={response !== null ? response.data : []} />
+          </ScrollView>
+        );
+    }
+  };
   const [routes] = useState([
     { key: "live", title: "Live" },
     { key: "upcoming", title: "Upcoming" },

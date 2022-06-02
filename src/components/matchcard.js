@@ -7,7 +7,7 @@ const MatchCard = (props) => {
   return (
     <ScrollView>
       <Container style={{margin: 16, marginTop: 0}}>
-        {props.fixtures.map((k, i) => {
+        {props.fixtures && props.fixtures.map((k, i) => {
           return (
             <Surface key={i} style={{ padding: 16, marginTop: 16, elevation: 4, borderRadius: 4 }}>
               <Container style={{ flexDirection: "column" }}>
